@@ -1,0 +1,20 @@
+@font-face {
+    font-family: "japanFont";
+    font-style: normal;
+    src: local("japanFont"), url("../fonts/MPLUS1p-Regular.woff") format("woff");
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: inherit;
+}
+
+body {
+    box-sizing: border-box;
+    font-family: "japanFont", sans-serif;
+}
+
+#canvas {
+    text-align: center;
+}
