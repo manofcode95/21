@@ -5,11 +5,11 @@ class Card {
     }
 
     frontface() {
-        return Texture.from(id["frontface.png"]);
+        return Texture.fromImage("./images/frontface.png");
     }
 
     backface() {
-        return Texture.from(id["backface.png"]);
+        return Texture.fromImage("./images/backface.png");
     }
 
     iconTexture() {

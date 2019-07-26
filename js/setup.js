@@ -37,4 +37,4 @@ let canStart = false,
     canPick,
     timeEnd,
     state,
-    c;
+    fadeSpeed = 0.04;

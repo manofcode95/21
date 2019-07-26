@@ -6,24 +6,24 @@ const Application = PIXI.Application,
     Graphics = PIXI.Graphics,
     Text = PIXI.Text,
     BitmapText = PIXI.extras.BitmapText,
-    Texture = PIXI.Texture;
+    Texture = PIXI.Texture,
+    TextStyle = PIXI.TextStyle;
 
 let app = new Application({
         backgroundColor: 0xffffff,
         width: LOGICAL_WIDTH,
         height: LOGICAL_HEIGHT,
-        antialias: true,
+        resolution: window.devicePixelRatio || 1,
         transparent: true,
-        resolution: RESOLUTION
+        autoResize: true
     }),
     background = new Container(),
     gameScene = new Container(),
     resultBoard = new Container(),
     cardsContainer = new Container();
 
-document.getElementById("canvas").appendChild(app.view);
+document.body.appendChild(app.view);
 app.stage.addChild(background, gameScene, resultBoard);
-
 // Load Images
 loader
     .add([
@@ -45,9 +45,6 @@ loader
 function setup(loader, res) {
     // Get json
     id = res["./images/shinkei.json"].textures;
-
-    // Add libraries
-    c = new Charm(PIXI);
 
     // Create background
     // Introduce Scene
@@ -80,14 +77,28 @@ function setup(loader, res) {
     // State
     state = gameLoop;
     app.ticker.add(delta => {
-        state();
+        state(delta);
     });
 }
 
 // Game Loop
-function gameLoop() {
-    c.update();
+function gameLoop(delta) {
     [miss, great, perfect].forEach(el => {
-        el.y += el.vy;
+        el.y += el.vy * delta;
     });
+
+    // Next btn animation
+    if (nextBtn1.visible) {
+        breathAnimation(nextBtn1, 168, 162, delta);
+    }
+    if (nextBtn2.visible) {
+        fadeAnimation(nextBtn2, delta);
+    }
+    if (startGameText.visible && background.visible) {
+        fadeAnimation(startGameText, delta);
+    }
+
+    if (resetText.visible && resultBoard.visible) {
+        fadeAnimation(resetText, delta);
+    }
 }

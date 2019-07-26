@@ -21,9 +21,7 @@ function showAndHideSprites() {
     });
 
     [
-        introduceText1,
-        introduceText2,
-        introduceText3,
+        introduceText,
         titleText,
         tutorialScene1,
         tutorialScene2,
@@ -41,9 +39,7 @@ function showAndHideSprites() {
         miss,
         great,
         perfect,
-        breakText1,
-        breakText2,
-        breakText3
+        breakText
     ].forEach(el => {
         el.visible = false;
     });
@@ -184,7 +180,7 @@ function createCardList(total) {
                 // Create card sprite
                 let cardSprite = new Sprite();
                 cardSprite.width = 35;
-                cardSprite.height = 51;
+                cardSprite.height = 51.5;
                 cardSprite.buttonMode = true;
                 cardSprite.interactive = true;
                 cardsContainer.addChild(cardSprite);
@@ -230,8 +226,8 @@ function flipCard(sprite, card, isHintCard = false) {
 
     // Add icon to card
     let icon = card.iconSprite();
-    icon.width = 24.3;
-    icon.height = 27;
+    icon.width = 23;
+    icon.height = 23;
     cardsContainer.addChild(icon);
     icon.x = sprite.x + sprite.width / 2 - icon.width / 2;
     icon.y = sprite.y + sprite.height / 2 - icon.height / 2;
@@ -373,27 +369,7 @@ function calculateAge() {
 
 // Calculate the number of right answers
 function calculateRightAnswers() {
-    numberRightResult.text = `${numOfWinRounds}/${TOTAL_ROUNDS} 問`;
-}
-
-// Resize handler
-function resizeHandler() {
-    const w = Math.max(window.innerWidth, document.documentElement.clientWidth);
-    const h = Math.max(
-        window.innerHeight,
-        document.documentElement.clientHeight
-    );
-
-    const scaleFactor = Math.min(
-        w / LOGICAL_WIDTH / RESOLUTION,
-        h / LOGICAL_HEIGHT / RESOLUTION
-    );
-
-    const newWidth = Math.ceil(LOGICAL_WIDTH * scaleFactor);
-    const newHeight = Math.ceil(LOGICAL_HEIGHT * scaleFactor);
-
-    app.renderer.resize(newWidth, newHeight);
-    app.stage.scale.set(scaleFactor);
+    numberRightResult.text = `${numOfWinRounds}/${TOTAL_ROUNDS}`;
 }
 
 // Start game after choosing game types
@@ -448,10 +424,12 @@ function newGame() {
     }
 
     // Show break scene
-    breakText2.text = `${wrongAnswerLimited}回`;
-    breakText1.visible = true;
-    breakText2.visible = true;
-    breakText3.visible = true;
+    if (wrongAnswerLimited === 1) {
+        breakText.texture = id["break-text-1.png"];
+    } else if (wrongAnswerLimited === 2) {
+        breakText.texture = id["break-text-2.png"];
+    }
+    breakText.visible = true;
 
     // Delete old icons
     if (openedIcons) {
@@ -472,9 +450,7 @@ function newGame() {
 
     setTimeout(() => {
         // Hide break scene
-        breakText1.visible = false;
-        breakText2.visible = false;
-        breakText3.visible = false;
+        breakText.visible = false;
 
         // Create new list of cards for the current game
         createCardList(totalCards);
